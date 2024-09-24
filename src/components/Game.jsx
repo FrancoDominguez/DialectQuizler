@@ -12,7 +12,7 @@ function Game() {
     <div className="text-white flex flex-col w-[700px] border-4 border-[#EAE0D5] rounded-xl p-5 bg-[#22333B]">
       <div className="flex justify-between pb-3">
         <div>
-          <div className="font-bold">Dialect Quizler</div>
+          <div className="font-bold">Xxquiz.it</div>
           <span className="font-bold">Category: </span>
           <span>{quizData.category}</span>
         </div>
