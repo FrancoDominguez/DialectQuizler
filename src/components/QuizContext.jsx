@@ -16,7 +16,7 @@ function QuizProvider({ children }) {
     wordsPerQuestion: 15,
     choicesPerQuestion: 4,
     filterKey: "type",
-    filterValue: "cyrillic",
+    filterValue: "arabic",
   };
 
   useEffect(() => {
