@@ -1,78 +1,108 @@
+// NewQuiz.jsx
 import availableLanguages from "../Languages/Cyrillic/Metadata.json";
-import path from "path";
-import fs from "fs";
 
-console.log(availableLanguages);
+function filterLanguagesByKey(languages, key, value) {
+  return languages.filter((language) => {
+    if (Array.isArray(language[key])) {
+      return language[key].includes(value);
+    } else {
+      return language[key] === value;
+    }
+  });
+}
 
-function filterLanguagesByType(languages, type) {
-  return languages.filter((item) => item.type && item.type === type);
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function generateWordString(words, wordsPerPrompt) {
-  for (let i = words.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [words[i], words[j]] = [words[j], words[i]];
-  }
-  return words.slice(0, wordsPerPrompt).join(" ");
+  const shuffledWords = shuffleArray(words);
+  return shuffledWords.slice(0, wordsPerPrompt).join(" ");
 }
 
-function pickRandomLanguage(arrayOfLangauges) {
-  return arrayOfLangauges[Math.floor(Math.random() * arrayOfLangauges.length)];
+function pickRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
 }
 
-async function extractText(languagesUsed) {
-  return Promise.all(
-    languagesUsed.map(async (language) => {
-      const module = await import(`../Languages/Cyrillic/${language.file}`);
-      const arrayOfWords = module.default.split(" ");
-      return {
-        ...language,
-        text: arrayOfWords,
-      };
+async function extractText(languages) {
+  const results = await Promise.all(
+    languages.map(async (language) => {
+      try {
+        const response = await fetch(`/Languages/Cyrillic/${language.file}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const content = await response.text();
+        const wordsArray = content.split(/\s+/);
+        return {
+          ...language,
+          text: wordsArray,
+        };
+      } catch (error) {
+        console.error(
+          `Error reading file for language ${language.name}:`,
+          error
+        );
+        return null;
+      }
     })
   );
+  return results.filter((result) => result !== null);
 }
 
 export default async function generateQuiz(params) {
-  const { wordsPerPrompt, numOfQuestions, numOfMCQs, type, timeLimit } = params;
+  const {
+    numOfQuestions,
+    wordsPerQuestion,
+    choicesPerQuestion,
+    filterKey,
+    filterValue,
+  } = params;
 
-  const filteredLanguages = filterLanguagesByType(availableLanguages, type);
-  const languagesJSON = await extractText(filteredLanguages);
-  console.log(`languages JSON: ${languagesJSON}`);
-  const filteredLanguagesArray = languagesJSON.map((language) => {
-    language.name;
-  });
+  const filteredLanguages = filterLanguagesByKey(
+    availableLanguages,
+    filterKey,
+    filterValue
+  );
+  if (filteredLanguages.length === 0) {
+    throw new Error(`No languages found for ${filterKey}: ${filterValue}`);
+  }
+
+  const languagesWithText = await extractText(filteredLanguages);
+  if (languagesWithText.length === 0) {
+    throw new Error(
+      `No language texts could be loaded for ${filterKey}: ${filterValue}`
+    );
+  }
+
+  const languageNames = languagesWithText.map((language) => language.name);
 
   const questions = [];
   for (let i = 0; i < numOfQuestions; i++) {
-    // pick answer and generate MCQs
-    const answer = pickRandomLanguage(filteredLanguagesArray);
-    let MCQs = [answer];
-    while (MCQs.length < numOfMCQs) {
-      const randomFillerLanguage =
-        filteredLanguagesArray[
-          Math.floor(Math.random() * filteredLanguagesArray.length)
-        ];
-      if (!MCQs.includes(randomFillerLanguage)) {
-        MCQs.push(randomFillerLanguage);
-      }
+    const answer = pickRandomElement(languagesWithText);
+    const MCQs = new Set([answer.name]);
+    while (MCQs.size < choicesPerQuestion) {
+      MCQs.add(pickRandomElement(languageNames));
     }
-    MCQs = MCQs.sort(() => Math.random() - 0.5);
-    const rightAnswerIndex = MCQs.indexOf(answer);
-    const languageText = languagesJSON.filter((language) => {
-      language.name === answer;
-    });
-    const prompt = generateWordString(languageText, wordsPerPrompt);
+    const MCQArray = shuffleArray(Array.from(MCQs));
+    const rightAnswerIndex = MCQArray.indexOf(answer.name);
+    const prompt = generateWordString(answer.text, wordsPerQuestion);
 
     questions.push({
       prompt: prompt,
       rightAnswerIndex: rightAnswerIndex,
-      answers: MCQs,
+      answers: MCQArray,
     });
   }
+
   return {
-    name: "Second Quiz",
-    category: "In this case, cyrillic",
+    name: "Quiz",
+    category: filterValue,
     questions: questions,
   };
 }

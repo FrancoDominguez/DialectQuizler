@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Kyrgyz",
+    "file": "Kyrgyz.txt",
+    "covered": true,
+    "type": "cyrillic",
+    "continent": "asia",
+    "countries": ["Kyrgyzstan"],
+    "regions": ["central-asia", "asia"]
+  },
+  {
+    "name": "Russian",
+    "covered": true,
+    "file": "Russian.txt",
+    "type": "cyrillic",
+    "continent": "asia",
+    "countries": ["Russia"],
+    "regions": ["northern-asia", "western-asia"]
+  },
+  {
+    "name": "Mongolian",
+    "covered": true,
+    "file": "Mongolian.txt",
+    "type": "cyrillic",
+    "countries": ["Mongolia"],
+    "continent": "asia",
+    "regions": ["eastern-asia"]
+  },
+  {
+    "name": "Bulgarian",
+    "file": "Bulgarian.txt",
+    "covered": true,
+    "type": "cyrillic",
+    "continent": "europe",
+    "countries": ["Bulgaria"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "Macedonian",
+    "file": "Macedonian.txt",
+    "covered": true,
+    "type": "cyrillic",
+    "continent": "europe",
+    "countries": ["Macedonia"],
+    "regions": ["southeastern-europe", "eastern-europe"]
+  },
+  {
+    "name": "Slovak",
+    "file": "Slovak.txt",
+    "covered": true,
+    "type": "cyrillic",
+    "continent": "europe",
+    "countries": ["Slovakia"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "CyrillicSerbian",
+    "file": "CyrillicSerbian.txt",
+    "covered": true,
+    "type": "cyrillic",
+    "continent": "europe",
+    "countries": ["Serbia"],
+    "regions": ["central-europe"]
+  }
+]

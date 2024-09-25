@@ -1,60 +1,64 @@
+// QuizProvider.jsx
 import { createContext, useState, useEffect } from "react";
-import buildQuiz from "../QuizBuilder";
 import generateQuiz from "../NewQuiz";
-
-const params = {
-  type: "Dialect Guesser",
-  numOfQuestions: 20,
-  wordsPerQuestion: 15,
-  category: "arabic",
-  choicesPerQuestion: 4,
-};
 
 const QuizContext = createContext();
 
 function QuizProvider({ children }) {
   const [quizData, setQuizData] = useState(null);
   const [guessHistory, setGuessHistory] = useState(null);
-  const [questionIndex, setQuestionIndex] = useState(null);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [error, setError] = useState(null);
+
+  const params = {
+    numOfQuestions: 20,
+    wordsPerQuestion: 15,
+    choicesPerQuestion: 4,
+    filterKey: "type",
+    filterValue: "cyrillic",
+  };
 
   useEffect(() => {
     const initializeState = async () => {
-      // Initialize quizData
-      let savedQuizData = localStorage.getItem("quizData");
-      let quiz;
-      if (savedQuizData === null) {
-        quiz = await generateQuiz(params);
-        localStorage.setItem("quizData", JSON.stringify(quiz));
-      } else {
-        quiz = JSON.parse(savedQuizData);
-      }
-      setQuizData(quiz);
+      try {
+        let savedQuizData = localStorage.getItem("quizData");
+        let quiz;
+        if (savedQuizData === null) {
+          quiz = await generateQuiz(params);
+          localStorage.setItem("quizData", JSON.stringify(quiz));
+        } else {
+          quiz = JSON.parse(savedQuizData);
+        }
+        setQuizData(quiz);
 
-      // Initialize guessHistory
-      let savedGuessHistory = localStorage.getItem("guessHistory");
-      let initialGuessHistory;
-      if (savedGuessHistory === null) {
-        initialGuessHistory = {
-          linkedTo: "insertquizidheremakingthislongsoitgoestonextline",
-          guesses: Array.from({ length: quiz.questions.length }, () => -1),
-          score: 0,
-        };
-        localStorage.setItem(
-          "guessHistory",
-          JSON.stringify(initialGuessHistory)
-        );
-      } else {
-        initialGuessHistory = JSON.parse(savedGuessHistory);
-      }
-      setGuessHistory(initialGuessHistory);
+        let savedGuessHistory = localStorage.getItem("guessHistory");
+        let initialGuessHistory;
+        if (savedGuessHistory === null) {
+          initialGuessHistory = {
+            linkedTo: quiz.name,
+            guesses: Array.from({ length: quiz.questions.length }, () => -1),
+            score: 0,
+          };
+          localStorage.setItem(
+            "guessHistory",
+            JSON.stringify(initialGuessHistory)
+          );
+        } else {
+          initialGuessHistory = JSON.parse(savedGuessHistory);
+        }
+        setGuessHistory(initialGuessHistory);
 
-      // Initialize questionIndex
-      let savedQuestionIndex = localStorage.getItem("questionIndex");
-      if (savedQuestionIndex === null) {
-        localStorage.setItem("questionIndex", 0);
-        setQuestionIndex(0);
-      } else {
-        setQuestionIndex(Number(savedQuestionIndex));
+        let savedQuestionIndex = localStorage.getItem("questionIndex");
+        if (savedQuestionIndex === null) {
+          localStorage.setItem("questionIndex", "0");
+          setQuestionIndex(0);
+        } else {
+          setQuestionIndex(Number(savedQuestionIndex));
+        }
+      } catch (err) {
+        console.error("Error initializing quiz:", err);
+        setError(err.message);
       }
     };
 
@@ -62,52 +66,61 @@ function QuizProvider({ children }) {
   }, []);
 
   const resetQuiz = async () => {
-    localStorage.clear();
+    localStorage.removeItem("quizData");
+    localStorage.removeItem("guessHistory");
+    localStorage.removeItem("questionIndex");
 
-    // Reset quizData
-    const quiz = await generateQuiz(params);
-    localStorage.setItem("quizData", JSON.stringify(quiz));
-    setQuizData(quiz);
+    try {
+      const quiz = await generateQuiz(params);
+      localStorage.setItem("quizData", JSON.stringify(quiz));
+      setQuizData(quiz);
 
-    // Reset guessHistory
-    const initialGuessHistory = {
-      linkedTo: "insertquizidheremakingthislongsoitgoestonextline",
-      guesses: Array.from({ length: quiz.questions.length }, () => -1),
-      score: 0,
-    };
-    localStorage.setItem("guessHistory", JSON.stringify(initialGuessHistory));
-    setGuessHistory(initialGuessHistory);
+      const initialGuessHistory = {
+        linkedTo: quiz.name,
+        guesses: Array.from({ length: quiz.questions.length }, () => -1),
+        score: 0,
+      };
+      localStorage.setItem("guessHistory", JSON.stringify(initialGuessHistory));
+      setGuessHistory(initialGuessHistory);
 
-    // Reset questionIndex
-    localStorage.setItem("questionIndex", 0);
-    setQuestionIndex(0);
+      localStorage.setItem("questionIndex", "0");
+      setQuestionIndex(0);
+      setIsQuizCompleted(false);
+    } catch (err) {
+      console.error("Error resetting quiz:", err);
+      setError(err.message);
+    }
   };
 
   const handleGuess = (index) => {
-    if (
-      quizData &&
-      guessHistory &&
-      questionIndex < quizData.questions.length - 1
-    ) {
-      const updatedGuessHistory = { ...guessHistory };
-      updatedGuessHistory.guesses[questionIndex] = index; // Update guess history
-      if (index === quizData.questions[questionIndex].rightAnswerIndex) {
-        updatedGuessHistory.score += 1; // Update score
-      }
+    if (!quizData || !guessHistory || isQuizCompleted) {
+      return;
+    }
 
-      setGuessHistory(updatedGuessHistory);
-      localStorage.setItem("guessHistory", JSON.stringify(updatedGuessHistory));
+    const updatedGuessHistory = { ...guessHistory };
+    updatedGuessHistory.guesses[questionIndex] = index;
 
-      // Update question index
+    if (index === quizData.questions[questionIndex].rightAnswerIndex) {
+      updatedGuessHistory.score += 1;
+    }
+
+    setGuessHistory(updatedGuessHistory);
+    localStorage.setItem("guessHistory", JSON.stringify(updatedGuessHistory));
+
+    if (questionIndex < quizData.questions.length - 1) {
       setTimeout(() => {
         const newIndex = questionIndex + 1;
         setQuestionIndex(newIndex);
-        localStorage.setItem("questionIndex", newIndex);
-      }, 500);
+        localStorage.setItem("questionIndex", newIndex.toString());
+      }, 1000);
     } else {
-      console.log("End of quiz");
+      setIsQuizCompleted(true);
     }
   };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   if (!quizData || !guessHistory || questionIndex === null) {
     return <div>Loading...</div>;
@@ -121,6 +134,7 @@ function QuizProvider({ children }) {
         quizData,
         guessHistory,
         questionIndex,
+        isQuizCompleted,
       }}
     >
       {children}
