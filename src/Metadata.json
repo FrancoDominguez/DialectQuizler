@@ -48,7 +48,7 @@
     "name": "Slovak",
     "file": "Slovak.txt",
     "covered": true,
-    "type": "cyrillic",
+    "type": "latin",
     "continent": "europe",
     "countries": ["Slovakia"],
     "regions": ["central-europe"]
