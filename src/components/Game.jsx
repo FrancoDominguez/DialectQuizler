@@ -1,12 +1,13 @@
 import Answers from "./Answers";
 import Prompt from "./Prompt";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { QuizContext } from "./QuizContext";
 
 function Game() {
   const { resetQuiz, handleGuess, quizData, guessHistory, questionIndex } =
     useContext(QuizContext);
   const score = guessHistory.score;
+  const category = quizData.category;
 
   return (
     <div className="text-white flex flex-col w-[700px] border-4 border-[#EAE0D5] rounded-xl p-5 bg-[#22333B]">
@@ -14,7 +15,7 @@ function Game() {
         <div>
           <div className="font-bold">Xxquiz.it</div>
           <span className="font-bold">Category: </span>
-          <span>{quizData.category}</span>
+          <span>{category}</span>
         </div>
         <div className="flex flex-col items-end">
           <div className="font-bold">Question {questionIndex + 1}</div>
