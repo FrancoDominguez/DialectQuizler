@@ -9,8 +9,8 @@ function App() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0908]">
         <QuizProvider>
           <Routes>
-            <Route path="/" element={<GameSetup />}></Route>
-            <Route path="/game" element={<Game />} />
+            <Route path="/setup" element={<GameSetup />}></Route>
+            <Route path="/" element={<Game />} />
           </Routes>
         </QuizProvider>
       </div>
