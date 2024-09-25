@@ -15,7 +15,8 @@
     "type": "cyrillic",
     "continent": "asia",
     "countries": ["Russia"],
-    "regions": ["northern-asia", "western-asia"]
+    "regions": ["northern-asia", "western-asia"],
+    "remarks": "resembles Bulgarian"
   },
   {
     "name": "Mongolian",
@@ -33,7 +34,8 @@
     "type": "cyrillic",
     "continent": "europe",
     "countries": ["Bulgaria"],
-    "regions": ["central-europe"]
+    "regions": ["central-europe"],
+    "remarks": "resembles Russian"
   },
   {
     "name": "Macedonian",
@@ -60,6 +62,42 @@
     "type": "cyrillic",
     "continent": "europe",
     "countries": ["Serbia"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "Arabic",
+    "file": "Arabic.txt",
+    "covered": true,
+    "type": "arabic",
+    "continent": "middle-east",
+    "countries": ["Saudi Arabia", "Egypt", "etc"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "Pashto",
+    "file": "Pashto.txt",
+    "covered": true,
+    "type": "arabic",
+    "continent": "europe",
+    "countries": ["Serbia"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "Farsi",
+    "file": "Farsi.txt",
+    "covered": true,
+    "type": "arabic",
+    "continent": "Asia",
+    "countries": ["Iran"],
+    "regions": ["central-europe"]
+  },
+  {
+    "name": "Urdu",
+    "file": "Urdu.txt",
+    "covered": true,
+    "type": "arabic",
+    "continent": "Asia",
+    "countries": ["India"],
     "regions": ["central-europe"]
   }
 ]
