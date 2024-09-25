@@ -1,4 +1,3 @@
-import data from "../Languages/Arabic/Arabic.json";
 import Game from "./components/Game";
 import { QuizProvider } from "./components/QuizContext";
 

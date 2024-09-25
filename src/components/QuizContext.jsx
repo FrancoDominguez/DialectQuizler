@@ -112,7 +112,7 @@ function QuizProvider({ children }) {
         const newIndex = questionIndex + 1;
         setQuestionIndex(newIndex);
         localStorage.setItem("questionIndex", newIndex.toString());
-      }, 1000);
+      }, 500);
     } else {
       setIsQuizCompleted(true);
     }

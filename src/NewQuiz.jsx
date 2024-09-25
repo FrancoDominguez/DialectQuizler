@@ -1,5 +1,5 @@
 // NewQuiz.jsx
-import availableLanguages from "../Languages/Cyrillic/Metadata.json";
+import availableLanguages from "./Metadata.json";
 
 function filterLanguagesByKey(languages, key, value) {
   return languages.filter((language) => {
@@ -29,6 +29,7 @@ function pickRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
+// NewQuiz.jsx
 async function extractText(languages) {
   const results = await Promise.all(
     languages.map(async (language) => {
