@@ -65,7 +65,7 @@ function QuizProvider({ children }) {
     localStorage.clear();
 
     // Reset quizData
-    const quiz = await buildQuiz(params);
+    const quiz = await generateQuiz(params);
     localStorage.setItem("quizData", JSON.stringify(quiz));
     setQuizData(quiz);
 
