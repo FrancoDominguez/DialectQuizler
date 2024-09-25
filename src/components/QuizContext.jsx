@@ -125,7 +125,6 @@ function QuizProvider({ children }) {
   if (!quizData || !guessHistory || questionIndex === null) {
     return <div>Loading...</div>;
   }
-
   return (
     <QuizContext.Provider
       value={{
