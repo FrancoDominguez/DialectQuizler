@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import buildQuiz from "../QuizBuilder";
+import generateQuiz from "../NewQuiz";
 
 const params = {
   type: "Dialect Guesser",
@@ -22,7 +23,7 @@ function QuizProvider({ children }) {
       let savedQuizData = localStorage.getItem("quizData");
       let quiz;
       if (savedQuizData === null) {
-        quiz = await buildQuiz(params);
+        quiz = await generateQuiz(params);
         localStorage.setItem("quizData", JSON.stringify(quiz));
       } else {
         quiz = JSON.parse(savedQuizData);
