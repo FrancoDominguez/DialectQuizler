@@ -1,13 +1,20 @@
-import Game from "./components/Game";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QuizProvider } from "./components/QuizContext";
+import Game from "./components/Game";
+import GameSetup from "./components/GameSetup";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0908]">
-      <QuizProvider>
-        <Game />
-      </QuizProvider>
-    </div>
+    <Router>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0A0908]">
+        <QuizProvider>
+          <Routes>
+            <Route path="/" element={<GameSetup />}></Route>
+            <Route path="/game" element={<Game />} />
+          </Routes>
+        </QuizProvider>
+      </div>
+    </Router>
   );
 }
 

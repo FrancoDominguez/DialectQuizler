@@ -1,0 +1,118 @@
+<div
+  ng-style="layout.action"
+  class="svy-wrapper"
+  style="position: absolute; left: 201px; top: 66px; width: 206px; height: 20px"
+>
+  <data-servoydefault-combobox
+    name="action"
+    svy-model="model.action"
+    svy-api="api.action"
+    svy-handlers="handlers.action"
+    svy-servoyapi="handlers.action.svy_servoyApi"
+    class="ng-isolate-scope"
+    ><div
+      class="svy-combobox ui-select-container ui-select-bootstrap dropdown ng-not-empty ng-valid"
+      ng-class="{open: $select.open}"
+      ng-model="model.dataProviderID"
+      theme="bootstrap"
+      search-enabled="enablefilter"
+      reset-search-input="true"
+      append-to-body="true"
+      id="s956396856299c1567ca99beab6194bda"
+      ng-disabled="model.enabled == false"
+      ng-style="style"
+      svy-tooltip="model.toolTipText"
+      sablo-tabseq="model.tabSeq"
+      svy-attributes="model.attributes"
+      on-select="onItemSelect($event)"
+      style="height: 100%; width: 100%; min-height: 20px"
+    >
+      <div
+        class="ui-select-match ng-scope"
+        ng-hide="$select.open &amp;&amp; $select.searchEnabled"
+        ng-disabled="$select.disabled"
+        ng-class="{'btn-default-focus':$select.focus}"
+        placeholder=""
+        svy-rightclick="handlers.onRightClickMethodID($event)"
+        ng-style="style"
+        svy-margin="model.margin"
+        style="height: 100%; width: 100%; min-height: 20px"
+      >
+        <span
+          tabindex="-1"
+          class="btn btn-default form-control ui-select-toggle"
+          aria-label="Select box activate"
+          ng-disabled="$select.disabled"
+          ng-click="$select.activate()"
+          style="outline: 0"
+          ><span
+            ng-show="$select.isEmpty()"
+            class="ui-select-placeholder text-muted ng-binding ng-hide"
+          ></span>
+          <span
+            ng-hide="$select.isEmpty()"
+            class="ui-select-match-text pull-left"
+            ng-class="{'ui-select-allow-clear': $select.allowClear &amp;&amp; !$select.isEmpty()}"
+            ng-transclude=""
+            >Navigate to report</span
+          >
+          <i class="caret pull-right" ng-click="$select.toggle($event)"></i>
+          <a
+            ng-show="$select.allowClear &amp;&amp; !$select.isEmpty() &amp;&amp; ($select.disabled !== true)"
+            aria-label="Select box clear"
+            style="margin-right: 10px"
+            ng-click="$select.clear($event)"
+            class="btn btn-xs btn-link pull-right ng-hide"
+            ><i class="glyphicon glyphicon-remove" aria-hidden="true"></i></a
+        ></span>
+      </div>
+      <span
+        ng-show="$select.open &amp;&amp; $select.refreshing &amp;&amp; $select.spinnerEnabled"
+        class="ui-select-refreshing glyphicon-refresh ui-select-spin ng-hide"
+      ></span>
+      <input
+        type="search"
+        autocomplete="off"
+        tabindex="-1"
+        aria-expanded="true"
+        aria-label="Select box"
+        aria-owns="ui-select-choices-11"
+        class="form-control ui-select-search ng-pristine ng-untouched ng-valid ng-empty ng-hide"
+        ng-class="{ 'ui-select-search-hidden' : !$select.searchEnabled }"
+        placeholder=""
+        ng-model="$select.search"
+        ng-show="$select.open"
+        style="width: 10px"
+      />
+      <ul
+        class="ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu ng-scope ng-hide"
+        ng-show="$select.open &amp;&amp; $select.items.length > 0"
+        repeat="item.realValue as item in model.valuelistID | propertyFormattedFilter: { displayValue : $select.search} : model.format.display:model.format.type"
+      >
+        <li class="ui-select-choices-group" id="ui-select-choices-11">
+          <div
+            class="divider ng-hide"
+            ng-show="$select.isGrouped &amp;&amp; $index > 0"
+          ></div>
+          <div
+            ng-show="$select.isGrouped"
+            class="ui-select-choices-group-label dropdown-header ng-binding ng-hide"
+            ng-bind="$group.name"
+          ></div>
+          <!-- ngRepeat: item in $select.items --><!-- ngIf: $select.open --><!-- end ngRepeat: item in $select.items --><!-- ngIf: $select.open --><!-- end ngRepeat: item in $select.items --><!-- ngIf: $select.open --><!-- end ngRepeat: item in $select.items -->
+        </li>
+      </ul>
+      <div class="ui-select-no-choice"></div>
+      <ui-select-single></ui-select-single
+      ><input
+        ng-disabled="$select.disabled"
+        class="ui-select-focusser ui-select-offscreen ng-scope"
+        type="text"
+        id="focusser-11"
+        aria-label="Select box focus"
+        aria-haspopup="true"
+        role="button"
+        tabindex="3"
+      /></div
+  ></data-servoydefault-combobox>
+</div>
